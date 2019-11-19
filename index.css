@@ -1,3 +1,8 @@
 .css-faint {
     color : #DBDBDB;
 }
+
+.css-hide
+{
+    display : none;
+}
