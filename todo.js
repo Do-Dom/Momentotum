@@ -92,6 +92,10 @@ function init()
             showTodo(TodoContentList[i]);
         }
     }
+    else
+    {
+        TodoContentList = new Array();
+    }
 
 }
 
