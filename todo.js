@@ -17,6 +17,11 @@ function saveTodoList()
 
 function handleBtnClick(event)
 {
+    const tagName = event.target.tagName;
+
+    if(tagName !== "BUTTON")
+        return;
+
     const li = event.target.parentNode;
     todoList.removeChild(li);
     const cleanedTodoList = TodoContentList.filter((todo)=>{
@@ -47,7 +52,6 @@ function showTodo(newTodo)
     const btn = document.createElement("button");
     const span = document.createElement("span");
     btn.innerText = "X";
-    btn.addEventListener("click", handleBtnClick);
     span.innerHTML = newTodo.content;
     
     li.id = newTodo.id;
@@ -84,6 +88,9 @@ function handleSubmit(event)
 function init()
 {
     todoForm.addEventListener("submit", handleSubmit);
+    todoList.addEventListener("click", handleBtnClick);
+
+
     TodoContentList = JSON.parse(localStorage.getItem(ToDO_LS));
     if(TodoContentList != null)
     {
