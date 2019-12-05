@@ -9,26 +9,50 @@ const ToDO_LS = "todos";
 
 let TodoContentList = [];
 
+const SuperEventHandler = {
+    onBtnClick : (event)=>{
+        const tagName = event.target.tagName;
+
+        if(tagName !== "BUTTON")
+            return;
+    
+        const li = event.target.parentNode;
+        todoList.removeChild(li);
+        const cleanedTodoList = TodoContentList.filter((todo)=>{
+            return todo.id != parseInt(li.id);
+        });
+        TodoContentList = cleanedTodoList;
+        saveTodoList();
+    },
+
+    onSubmit : (event)=>{
+        event.preventDefault();
+        if(todoInput.value.length<1){
+            console.log("Input Value is null");
+            return;
+        }
+    
+        const id = getId();
+        const _todo = {
+            id,
+            content : todoInput.value
+        };
+    
+        if(TodoContentList == null)
+          TodoContentList = new Array();
+    
+        TodoContentList.push(_todo);
+        saveTodoList();
+    
+        showTodo(_todo);
+        todoInput.value = "";
+    }
+};
+
 function saveTodoList()
 {
     console.log(TodoContentList);
     localStorage.setItem(ToDO_LS, JSON.stringify(TodoContentList));
-}
-
-function handleBtnClick(event)
-{
-    const tagName = event.target.tagName;
-
-    if(tagName !== "BUTTON")
-        return;
-
-    const li = event.target.parentNode;
-    todoList.removeChild(li);
-    const cleanedTodoList = TodoContentList.filter((todo)=>{
-        return todo.id != parseInt(li.id);
-    });
-    TodoContentList = cleanedTodoList;
-    saveTodoList();
 }
 
 function getId()
@@ -61,34 +85,10 @@ function showTodo(newTodo)
     todoList.appendChild(li);
 }
 
-function handleSubmit(event)
-{
-    event.preventDefault();
-    if(todoInput.value.length<1){
-        console.log("Input Value is null");
-        return;
-    }
-
-    const id = getId();
-    const _todo = {
-        id,
-        content : todoInput.value
-    };
-
-    if(TodoContentList == null)
-      TodoContentList = new Array();
-
-    TodoContentList.push(_todo);
-    saveTodoList();
-
-    showTodo(_todo);
-    todoInput.value = "";
-}
-
 function init()
 {
-    todoForm.addEventListener("submit", handleSubmit);
-    todoList.addEventListener("click", handleBtnClick);
+    todoForm.addEventListener("submit", SuperEventHandler.onSubmit);
+    todoList.addEventListener("click", SuperEventHandler.onBtnClick);
 
 
     TodoContentList = JSON.parse(localStorage.getItem(ToDO_LS));

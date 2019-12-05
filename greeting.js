@@ -8,43 +8,21 @@ const greetingResetBtn = greetingContainer.querySelector(".js-btn");
 
 const LS_NAME = "NAME";
 
-init();
+const superEventHandler = {
+    onSubmit : (submitEvent)=>{
+        submitEvent.preventDefault();
 
-function init()
-{
-    greetingComment.classList.add(FAINT);
-    greeting();
-}
+        localStorage.setItem(LS_NAME, greetingInput.value);
+        showName(greetingInput.value);
+        greetingInput.value = "";
+    },
 
-function greeting()
-{
-    greetingForm.addEventListener("submit", handleSubmit);
-    greetingResetBtn.addEventListener("click", handleResetBtn);
-    greetingInput.placeholder = "What is your name?";
-
-    if(localStorage.getItem(LS_NAME) != null) {
-        showName(localStorage.getItem(LS_NAME));
-    }
-    else{
+    onResetBtnClick : ()=>{
+        console.log("Cick Reset Btn");
+        localStorage.removeItem(LS_NAME);
         showForm();
     }
-}
-
-function handleSubmit(submitEvent)
-{
-    submitEvent.preventDefault();
-
-    localStorage.setItem(LS_NAME, greetingInput.value);
-    showName(greetingInput.value);
-    greetingInput.value = "";
-}
-
-function handleResetBtn(clickEvent)
-{
-    console.log("Cick Reset Btn");
-    localStorage.removeItem(LS_NAME);
-    showForm();
-}
+};
 
 function showName(name)
 {
@@ -60,3 +38,24 @@ function showForm()
     greetingResetBtn.classList.add(HIDE);
 }
 
+function greeting()
+{
+    greetingForm.addEventListener("submit", superEventHandler.onSubmit);
+    greetingResetBtn.addEventListener("click", superEventHandler.onResetBtnClick);
+    greetingInput.placeholder = "What is your name?";
+
+    if(localStorage.getItem(LS_NAME) != null) {
+        showName(localStorage.getItem(LS_NAME));
+    }
+    else{
+        showForm();
+    }
+}
+
+function init()
+{
+    greetingComment.classList.add(FAINT);
+    greeting();
+}
+
+init();

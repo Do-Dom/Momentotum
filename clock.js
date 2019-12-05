@@ -2,14 +2,6 @@ const FAINT = "css-faint";
 const clockContainer = document.querySelector(".js-clock");
 const clockTitle = clockContainer.querySelector(".js-title");
 
-init();
-
-function init()
-{
-    clockTitle.classList.add(FAINT);
-    setInterval(handleTimer, 1000);
-}
-
 function handleTimer()
 {
    const date = new Date();
@@ -21,3 +13,12 @@ function handleTimer()
 
    `;  
 }
+
+function init()
+{
+    clockTitle.classList.add(FAINT);
+    setInterval(handleTimer, 1000);
+}
+
+
+init();
